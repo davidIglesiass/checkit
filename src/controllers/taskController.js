@@ -41,37 +41,88 @@ export const newTask = async (req, res) => {
 }
 
 export const findAllTask = async (req, res) => {
-    const tareas = await Task.find()
-    res.json(tareas)
+
+    try {
+        const tareas = await Task.find()
+        res.json(tareas)
+    } catch (error) {
+        
+        res.status(500).json(
+            {
+                        //error.message 
+                message: "Upps, something's wrong"
+            }
+        )
+    }
+
 }
 
 export const findOneTask = async (req, res) => {
-
+    
     const id = req.params.id
-    const tarea = await Task.findById(id)
-    res.json(tarea)
+
+    try {
+
+        const id = req.params.id
+        const tarea = await Task.findById(id)
+
+        if (!tarea) return res.status(404).json({ message: `La tarea con id: ${id}, no existe` })
+
+        res.json(tarea)
+        
+    } catch (error) {
+
+        res.status(500).json(
+            {
+                message: error.message || `Error al buscar la tarea con el id: ${id} ` 
+            }
+        )
+    }
 }
 
 export const updateTask = async (req, res) => {
 
-    const {id} = req.params // {id} or id is the same thing
+    const { id } = req.params // {id} or id is the same thing
+    
+    if(!req.body.title) {return res.status(400).send({ message:"el campo titulo esta VACIO!"})}
+    if(!req.body.description) {return res.status(400).send({ message:"el campo descripcion esta VACIO!"})}
 
-    await Task.findByIdAndUpdate(id, req.body)
-
-    res.json(
-        {
-            message: `La tarea con el: ${id}, ha sido actualizada`
-        }
-    )
+    try {    
+        await Task.findByIdAndUpdate(id, req.body)
+        res.json(
+            {
+                message: `La tarea con el: ${id}, ha sido actualizada`
+            }
+        )
+    } catch (error) {
+        res.status(500).json(
+            {
+                message:`Ha habido un error al momento de actualizar la tarea con el id: ${id}`
+            }
+        )
+    }
 }
 
 export const deleteTask = async (req, res) => {
 
     const id = req.params.id
-    await Task.findByIdAndDelete(id)
-    res.json(
-        {
-            message:`La tarea con el id: ${id}, ha sido eliminada satisfactoriamente`
-        }
-    )
+  
+    try {
+        const id = req.params.id
+        await Task.findByIdAndDelete(id)
+        res.json(
+            {
+                message:`La tarea con el id: ${id}, ha sido eliminada satisfactoriamente`
+            }
+        )
+    } catch (error) {
+        res.status(500).json(
+            {
+                message: error.message || `Error al buscar la tarea con el id: ${id} `
+            }
+        )   
+        
+    }
+
+
 }
