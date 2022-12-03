@@ -126,3 +126,19 @@ export const deleteTask = async (req, res) => {
 
 
 }
+
+//Busqueda flexible por nombre (titulo de tarea)
+export const findByName = async (req, res) => {
+
+    if(!req.body.title) return res.status(400).json({ message: "Campo title obligatorio" })
+    const title = req.body.title
+    try {
+        const tareas = await Task.find({ title: { $regex: title, $options: 'i' } })
+        if (tareas.length === 0) return res.status(404).json({ message: "No se encontro coincidencia alguna" })
+        res.json(tareas)
+    } catch (error) {
+        res.status(500).json({
+            message: "Opps, algo fallo al encontrar tu tarea"
+        })
+    }
+}

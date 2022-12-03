@@ -1,6 +1,7 @@
 import express from 'express'
 import Task from './models/Task'
 import taskRoutes from './routes/task.router'
+import authRoutes from './routes/auth.router'
 
 const app = express()
 
@@ -22,6 +23,9 @@ app.post('/', (req, res) => {
 
 
 app.use('/api/tasks', taskRoutes)
+
+
+app.use('/api/auth', authRoutes)
 
 
 

@@ -8,6 +8,8 @@ router.post('/', taskCntl.newTask)
 
 router.get('/', taskCntl.findAllTask)
 
+router.get('/search', taskCntl.findByName)
+
 router.get('/:id', taskCntl.findOneTask)
 
 router.put('/:id', taskCntl.updateTask)
