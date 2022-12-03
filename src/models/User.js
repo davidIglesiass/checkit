@@ -1,27 +1,44 @@
-/* 
-Requerimientos para el modelo:
-USERNAME, PASSWORD, EMAIL, ROL
+/*
+USERNAME
+PASSWORD
+EMAIL
+ROL
 */
 
 import { Schema, model } from "mongoose";
+import bcrypt from 'bcryptjs'
 
 const userSchema = new Schema({
-    username: {
-        type: String, 
+    username:{
+        type:String,
         required: true,
         unique: true
     },
-    email: {
-        type: String,
-        required: true,
+    email:{
+        type:String,
+        required: true
     },
-    roles: [{
-        ref: "Role",
+    password:{
+        type:String,
+        required: true
+    },
+    roles:[{
+        ref:"Role",
         type: Schema.Types.ObjectId
     }]
-}, {
+},{
     timestamps: true,
     versionKey: false
 })
 
-export default model('User', userSchema)
+userSchema.statics.encryptPassword = async (password)=>{
+    const salt = await bcrypt.genSalt(10)
+    return await bcrypt.hash(password, salt)
+}
+
+
+userSchema.statics.comparePassword = async (password, receivedPassword)=>{
+    return await bcrypt.compare(password, receivedPassword)
+}
+
+export default model ('User', userSchema)
