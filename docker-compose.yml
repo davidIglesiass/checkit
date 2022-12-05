@@ -1,0 +1,8 @@
+version: '3'
+services:
+  backendnode:
+    build: .
+    ports:
+      - '4000:3000'
+    evironment:
+      - PORT=3000
