@@ -5,7 +5,7 @@ import User from '../models/User'
 export const verifyToken = async (req, res, next) => {
     try {
 
-        const token = req.headers["x-acces-token"]
+        const token = req.headers["x-access-token"]
         
         if (!token) return res.status(403).json({ message: "No se proporsiono token de acceso" })
 

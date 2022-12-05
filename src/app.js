@@ -2,12 +2,14 @@ import express from 'express'
 import Task from './models/Task'
 import taskRoutes from './routes/task.router'
 import authRoutes from './routes/auth.router'
+import ExpressStatusMonitor from 'express-status-monitor'
 
 const app = express()
 
 app.set('port', 3000)
 
 app.use(express.json())
+app.use(ExpressStatusMonitor())
 
 app.get('/', (req, res) => {
     res.json({
