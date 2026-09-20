@@ -1,4 +1,0 @@
-{
-    "MONGODB_URI": "mongodb+srv://admin:2tAobhS6EptdMZ9d@cluster0.uptjeix.mongodb.net/?retryWrites=true&w=majority",
-    "SECRET": "apiSecretKey"
-}
